@@ -83,14 +83,6 @@ coverage.xml
 .dmypy.json
 dmypy.json
 
-# Uploads
-uploads/
-media/
-
-# Static files (якщо генеруються)
-/static/uploads/
-/static/media/
-
 # Session files
 flask_session/
 
