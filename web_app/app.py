@@ -124,11 +124,14 @@ def index():
     
     featured_products = cursor.fetchall()
     
-    # Отримання категорій
+    # Отримання категорій (тільки підкатегорії де є товари)
     cursor.execute("""
-        SELECT CategoryID, CategoryName, Description
-        FROM Categories
-        WHERE ParentCategoryID IS NULL
+        SELECT TOP 8 c.CategoryID, c.CategoryName, c.Description
+        FROM Categories c
+        INNER JOIN Products p ON p.CategoryID = c.CategoryID
+        WHERE c.ParentCategoryID IS NOT NULL AND p.IsActive = 1
+        GROUP BY c.CategoryID, c.CategoryName, c.Description
+        ORDER BY COUNT(p.ProductID) DESC
     """)
     categories = cursor.fetchall()
     
