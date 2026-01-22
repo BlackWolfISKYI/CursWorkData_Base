@@ -1,5 +1,8 @@
-{% extends "base.html" %} {% block title %}Каталог товарів - AirSoft Shop{%
-endblock %} {% block content %}
+{% extends "base.html" %}
+
+{% block title %}Каталог товарів - AirSoft Shop{% endblock %}
+
+{% block content %}
 <div class="container">
   <h1 class="mb-4">Каталог товарів</h1>
 
@@ -30,16 +33,7 @@ endblock %} {% block content %}
               <select class="form-select" name="category">
                 <option value="">Всі категорії</option>
                 {% for cat in categories %}
-                <option
-                  value="{{ cat[0] }}"
-                  {%
-                  if
-                  selected_category=""
-                  ="cat[0]"
-                  %}selected{%
-                  endif
-                  %}
-                >
+                <option value="{{ cat[0] }}" {% if selected_category == cat[0] %}selected{% endif %}>
                   {{ cat[1] }}
                 </option>
                 {% endfor %}
@@ -100,7 +94,9 @@ endblock %} {% block content %}
             <div class="badge bg-danger position-absolute top-0 end-0 m-2">
               -{{ product[5] }}%
             </div>
-            {% endif %} {% if product[8] == 0 %}
+            {% endif %}
+            
+            {% if product[8] == 0 %}
             <div class="badge bg-warning position-absolute top-0 start-0 m-2">
               Немає в наявності
             </div>
