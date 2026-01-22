@@ -14,12 +14,15 @@ import os
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-# Конфігурація бази даних
+# Конфігурація бази даних (Azure SQL)
 DB_CONFIG = {
-    'driver': 'ODBC Driver 17 for SQL Server',
-    'server': '(localdb)\\MSSQLLocalDB',
-    'database': 'airsoft_shop',
-    'trusted_connection': 'yes'
+    'driver': 'ODBC Driver 18 for SQL Server',
+    'server': 'courseworkdatabase.database.windows.net',
+    'database': 'courseworkdatabase',
+    'uid': 'sqladmin',
+    'pwd': 'OBK272004obk',
+    'encrypt': 'yes',
+    'trustservercertificate': 'no'
 }
 
 # Flask-Login налаштування
@@ -32,14 +35,16 @@ login_manager.login_view = 'login'
 # ================================================
 
 def get_db_connection():
-    """Створення підключення до бази даних"""
+    """Створення підключення до бази даних (Azure SQL)"""
     try:
         connection_string = (
             f"DRIVER={{{DB_CONFIG['driver']}}};"
             f"SERVER={DB_CONFIG['server']};"
             f"DATABASE={DB_CONFIG['database']};"
-            f"Trusted_Connection={DB_CONFIG['trusted_connection']};"
-            f"Encrypt=no;"
+            f"UID={DB_CONFIG['uid']};"
+            f"PWD={DB_CONFIG['pwd']};"
+            f"Encrypt={DB_CONFIG['encrypt']};"
+            f"TrustServerCertificate={DB_CONFIG['trustservercertificate']};"
         )
         return pyodbc.connect(connection_string)
     except pyodbc.Error as e:
