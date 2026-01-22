@@ -1,0 +1,210 @@
+{% extends "base.html" %} {% block title %}{{ product[1] }} - AirSoft Shop{%
+endblock %} {% block content %}
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('index') }}">Головна</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('catalog') }}">Каталог</a>
+      </li>
+      <li class="breadcrumb-item active">{{ product[1] }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Product Image -->
+    <div class="col-md-6">
+      <img
+        src="{{ product[16] or 'https://via.placeholder.com/600x400?text=No+Image' }}"
+        class="img-fluid rounded"
+        alt="{{ product[1] }}"
+      />
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <span class="badge bg-secondary mb-2">{{ product[17] }}</span>
+      <h1>{{ product[1] }}</h1>
+      <p class="text-muted">{{ product[2] }} {{ product[3] or '' }}</p>
+
+      <!-- Rating -->
+      {% if rating_info[0] > 0 %}
+      <div class="mb-3">
+        <span class="text-warning">
+          {% for i in range(5) %} {% if i < rating_info[1]|int %}
+          <i class="bi bi-star-fill"></i>
+          {% else %}
+          <i class="bi bi-star"></i>
+          {% endif %} {% endfor %}
+        </span>
+        <span class="text-muted ms-2"
+          >{{ rating_info[1] }} ({{ rating_info[0] }} відгуків)</span
+        >
+      </div>
+      {% endif %}
+
+      <!-- Price -->
+      <div class="mb-3">
+        {% if product[14] > 0 %}
+        <p class="text-muted text-decoration-line-through mb-1">
+          {{ "%.2f"|format(product[13]) }} грн
+        </p>
+        <div class="badge bg-danger mb-2">Знижка -{{ product[14] }}%</div>
+        {% endif %}
+        <h2 class="text-primary">{{ "%.2f"|format(product[19]) }} грн</h2>
+      </div>
+
+      <!-- Stock Status -->
+      {% if product[15] > 0 %}
+      <p class="text-success">
+        <i class="bi bi-check-circle-fill"></i> В наявності: {{ product[15] }}
+        шт
+      </p>
+      {% else %}
+      <p class="text-danger">
+        <i class="bi bi-x-circle-fill"></i> Немає в наявності
+      </p>
+      {% endif %}
+
+      <!-- Supplier -->
+      {% if product[18] %}
+      <p class="text-muted small">Постачальник: {{ product[18] }}</p>
+      {% endif %}
+
+      <!-- Add to Cart Form -->
+      {% if current_user.is_authenticated and product[15] > 0 %}
+      <form
+        method="post"
+        action="{{ url_for('add_to_cart', product_id=product[0]) }}"
+        class="mb-3"
+      >
+        <div class="row g-2">
+          <div class="col-auto">
+            <input
+              type="number"
+              class="form-control"
+              name="quantity"
+              value="1"
+              min="1"
+              max="{{ product[15] }}"
+              style="width: 100px"
+            />
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-cart-plus"></i> Додати в кошик
+            </button>
+          </div>
+        </div>
+      </form>
+      {% elif not current_user.is_authenticated %}
+      <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i>
+        <a href="{{ url_for('login') }}">Увійдіть</a>, щоб додати товар в кошик
+      </div>
+      {% endif %}
+
+      <hr />
+
+      <!-- Description -->
+      <h5>Опис</h5>
+      <p>{{ product[4] or 'Опис відсутній' }}</p>
+    </div>
+  </div>
+
+  <!-- Technical Specifications -->
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <h3>Технічні характеристики</h3>
+      <table class="table table-bordered">
+        <tbody>
+          {% if product[5] %}
+          <tr>
+            <th style="width: 200px">Калібр</th>
+            <td>{{ product[5] }}</td>
+          </tr>
+          {% endif %} {% if product[6] %}
+          <tr>
+            <th>Швидкість (FPS)</th>
+            <td>{{ product[6] }}</td>
+          </tr>
+          {% endif %} {% if product[7] %}
+          <tr>
+            <th>Ємність магазину</th>
+            <td>{{ product[7] }} куль</td>
+          </tr>
+          {% endif %} {% if product[8] %}
+          <tr>
+            <th>Джерело живлення</th>
+            <td>{{ product[8] }}</td>
+          </tr>
+          {% endif %} {% if product[9] %}
+          <tr>
+            <th>Матеріал</th>
+            <td>{{ product[9] }}</td>
+          </tr>
+          {% endif %} {% if product[10] %}
+          <tr>
+            <th>Вага</th>
+            <td>{{ product[10] }} г</td>
+          </tr>
+          {% endif %} {% if product[11] %}
+          <tr>
+            <th>Довжина</th>
+            <td>{{ product[11] }} мм</td>
+          </tr>
+          {% endif %} {% if product[12] %}
+          <tr>
+            <th>Колір</th>
+            <td>{{ product[12] }}</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <h3>Відгуки покупців</h3>
+
+      {% if reviews %} {% for review in reviews %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="card-title">
+                {{ review[5] }} {{ review[6] }} {% if review[7] %}
+                <span class="badge bg-success small">Підтверджена покупка</span>
+                {% endif %}
+              </h5>
+              <div class="text-warning mb-2">
+                {% for i in range(5) %} {% if i < review[1] %}
+                <i class="bi bi-star-fill"></i>
+                {% else %}
+                <i class="bi bi-star"></i>
+                {% endif %} {% endfor %}
+              </div>
+            </div>
+            <small class="text-muted"
+              >{{ review[4].strftime('%d.%m.%Y') }}</small
+            >
+          </div>
+          {% if review[2] %}
+          <h6>{{ review[2] }}</h6>
+          {% endif %}
+          <p class="card-text">{{ review[3] }}</p>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> Поки що немає відгуків про цей товар
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

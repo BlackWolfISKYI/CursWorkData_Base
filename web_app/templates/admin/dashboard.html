@@ -1,0 +1,102 @@
+{% extends "base.html" %} {% block title %}Панель адміністратора - AirSoft
+Shop{% endblock %} {% block content %}
+<div class="container">
+  <h1 class="mb-4"><i class="bi bi-gear"></i> Панель адміністратора</h1>
+
+  <!-- Statistics Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white-50">Товарів</h6>
+              <h2 class="mb-0">{{ products_count }}</h2>
+            </div>
+            <i class="bi bi-box-seam display-4 opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white-50">Користувачів</h6>
+              <h2 class="mb-0">{{ users_count }}</h2>
+            </div>
+            <i class="bi bi-people display-4 opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-white bg-info">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white-50">Замовлень</h6>
+              <h2 class="mb-0">{{ orders_count }}</h2>
+            </div>
+            <i class="bi bi-cart-check display-4 opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white-50">Дохід</h6>
+              <h2 class="mb-0">{{ "%.0f"|format(revenue) }}</h2>
+              <small>грн</small>
+            </div>
+            <i class="bi bi-currency-dollar display-4 opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">Швидкі дії</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <a
+                href="{{ url_for('admin_products') }}"
+                class="btn btn-outline-primary w-100 p-3"
+              >
+                <i class="bi bi-box-seam display-6"></i>
+                <h5 class="mt-2">Управління товарами</h5>
+              </a>
+            </div>
+            <div class="col-md-4 mb-3">
+              <a href="#" class="btn btn-outline-success w-100 p-3">
+                <i class="bi bi-people display-6"></i>
+                <h5 class="mt-2">Користувачі</h5>
+              </a>
+            </div>
+            <div class="col-md-4 mb-3">
+              <a href="#" class="btn btn-outline-info w-100 p-3">
+                <i class="bi bi-cart-check display-6"></i>
+                <h5 class="mt-2">Замовлення</h5>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
